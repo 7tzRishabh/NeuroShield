@@ -1,0 +1,6 @@
+{
+  "name": "NeuroShield",
+  "description": "NeuroShield is an AI-powered security platform that integrates NeuroGlaze and CodeShield to protect digital assets and source code. NeuroGlaze focuses on safeguarding images and data using advanced adversarial techniques, while CodeShield detects and prevents sensitive information leaks such as API keys, credentials, and secrets through real-time scanning and protection.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

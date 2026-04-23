@@ -1,0 +1,48 @@
+{
+  "entities": {
+    "ProtectedAsset": {
+      "title": "ProtectedAsset",
+      "description": "An asset that has been protected by NeuroGlaze",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The Firebase UID of the user who owns this asset"
+        },
+        "originalFile": {
+          "type": "string",
+          "description": "The base64 or URL of the original file"
+        },
+        "protectedFile": {
+          "type": "string",
+          "description": "The base64 or URL of the protected file"
+        },
+        "fileType": {
+          "type": "string",
+          "description": "The type of the file (image, pdf, html, code)"
+        },
+        "protectionStrength": {
+          "type": "number",
+          "description": "The calculated protection strength score"
+        },
+        "noiseSignature": {
+          "type": "string",
+          "description": "The unique noise signature"
+        },
+        "createdAt": {
+          "type": "timestamp",
+          "description": "The timestamp when the asset was protected"
+        }
+      },
+      "required": ["userId", "originalFile", "protectedFile", "fileType", "protectionStrength", "noiseSignature", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/protected_assets/{assetId}": {
+      "schema": {
+        "$ref": "#/entities/ProtectedAsset"
+      },
+      "description": "Collection of protected assets"
+    }
+  }
+}

@@ -1,0 +1,67 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: protected_assets
+    // Document ID: auto-generated
+    // Fields:
+    //   - userId: string (required, immutable) - The Firebase UID of the user who owns this asset
+    //   - originalFile: string (required) - The base64 or URL of the original file
+    //   - protectedFile: string (required) - The base64 or URL of the protected file
+    //   - fileType: string (required) - The type of the file (image, pdf, html, code)
+    //   - protectionStrength: number (required) - The calculated protection strength score
+    //   - noiseSignature: string (required) - The unique noise signature
+    //   - createdAt: timestamp (required, immutable) - The timestamp when the asset was protected
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+    function isValidProtectedAsset(data) {
+      return hasOnlyAllowedFields(['userId', 'originalFile', 'protectedFile', 'fileType', 'protectionStrength', 'noiseSignature', 'createdAt']) &&
+             data.userId is string && data.userId.size() > 0 && data.userId.size() < 100 &&
+             data.originalFile is string && data.originalFile.size() > 0 && data.originalFile.size() < 10000000 && // Allow up to ~10MB base64
+             data.protectedFile is string && data.protectedFile.size() > 0 && data.protectedFile.size() < 10000000 && // Allow up to ~10MB base64
+             data.fileType is string && data.fileType.size() > 0 && data.fileType.size() < 20 &&
+             data.protectionStrength is number && data.protectionStrength >= 0 && data.protectionStrength <= 100 &&
+             data.noiseSignature is string && data.noiseSignature.size() > 0 && data.noiseSignature.size() < 50 &&
+             data.createdAt is timestamp;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+    match /protected_assets/{assetId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && 
+                    isValidProtectedAsset(request.resource.data) && 
+                    request.resource.data.userId == request.auth.uid;
+      allow update: if false; // Assets are immutable once created
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+  }
+}
