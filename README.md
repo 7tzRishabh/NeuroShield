@@ -87,6 +87,35 @@ NeuroShield uses a hybrid protection approach:
 
 ---
 
+## 🚀 Live Demo
+
+Experience NeuroShield in action:
+
+🔗 **Live App:**
+https://ais-pre-r5hjzjffe34qwn2nwiqk2z-86893305120.asia-east1.run.app
+
+✨ No installation required — open and start testing instantly.
+
+> ⚠️ Preview environment — some features may be limited or unstable.
+
+---
+
+📦 Installation & Setup
+
+# Clone the repository
+git clone https://github.com/your-username/neuroshield.git
+
+# Navigate into the project
+cd neuroshield
+
+# Install dependencies
+npm install
+
+# Run the app
+npm run dev
+
+---
+
 ## 👨‍💻 Authors & Credits
 
 * **Rishabh Raj** — Creator of NeuroShield
