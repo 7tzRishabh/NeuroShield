@@ -123,13 +123,3 @@ npm run dev
   👉 https://github.com/guptarishi772-stack
 
 ---
-
-## ⭐ Support
-
-If you like this project:
-
-* ⭐ Star the repo
-* 🍴 Fork it
-* 🚀 Contribute
-
----
